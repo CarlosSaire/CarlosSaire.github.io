@@ -1,8 +1,26 @@
-import Foto1 from "../assets/Images/9-25/Foto1.jpg";
-import Foto2 from "../assets/Images/9-25/Foto2.jpg";
+import { useEffect } from "react";
+import Foto1 from "../assets/images/9-25/Foto1.jpg";
+import Foto2 from "../assets/images/9-25/Foto2.jpg";
+import PublicoAudio from "../assets/images/9-25/Publico.mp3";
 
 function Page925() {
-  // audio code aquí...
+  useEffect(() => {
+    const audio = new Audio(PublicoAudio);
+    audio.loop = true;
+    audio.volume = 0.5;
+
+    const timeoutId = setTimeout(() => {
+      audio.play().catch(() => {
+        console.warn("⚠️ Bloqueado por el navegador, esperando clic...");
+      });
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>

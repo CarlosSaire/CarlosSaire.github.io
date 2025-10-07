@@ -6,27 +6,33 @@ function Page925() {
     audio.loop = true;
     audio.volume = 0.5;
 
-    // Esperar clic del usuario para reproducir
-    const handleClick = () => {
-      audio.play().catch((err) => {
-        console.warn("Error al intentar reproducir:", err);
-      });
-      document.removeEventListener("click", handleClick);
-    };
+    // Esperar 1 segundo antes de reproducir (evita bloqueos en algunos navegadores)
+    const timeoutId = setTimeout(() => {
+      const playPromise = audio.play();
 
-    document.addEventListener("click", handleClick);
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            console.log("🎵 Música iniciada automáticamente con delay");
+          })
+          .catch((err) => {
+            console.warn("⚠️ El navegador bloqueó la reproducción:", err);
+          });
+      }
+    }, 1000); // 1000 ms = 1 segundo
 
-    // Limpiar al salir de la página
+    // Limpiar cuando se cambie de página
     return () => {
+      clearTimeout(timeoutId);
       audio.pause();
-      document.removeEventListener("click", handleClick);
+      audio.currentTime = 0;
     };
   }, []);
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h1>Página 9.25</h1>
-      <p>Haz clic en cualquier parte para reproducir la música 🎵</p>
+      <p>La música comenzará en 1 segundo 🎶</p>
     </div>
   );
 }

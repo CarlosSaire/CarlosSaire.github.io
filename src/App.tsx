@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/9-25" replace />} />
         <Route path="/9-25" element={<Page925 />} />
+         <Route path="*" element={<Navigate to="/9-25" replace />} /> 
       </Routes>
     </BrowserRouter>
   );

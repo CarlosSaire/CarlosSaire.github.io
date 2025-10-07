@@ -18,7 +18,7 @@ function Page925() {
 
     const intervalId = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 3000);
+    }, 4000);
 
     return () => {
       newAudio.pause();
@@ -43,34 +43,63 @@ function Page925() {
     }
   };
 
+  // Crear corazones flotando
+  useEffect(() => {
+    const createHeart = () => {
+      const heart = document.createElement("div");
+      heart.textContent = "💖";
+      heart.style.position = "fixed";
+      heart.style.left = `${Math.random() * 90 + 5}%`;
+      heart.style.top = "100%";
+      heart.style.fontSize = `${Math.random() * 20 + 20}px`;
+      heart.style.opacity = "0.8";
+      heart.style.pointerEvents = "none";
+      heart.style.transition = "all 3s linear";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.style.top = `${Math.random() * 30}%`;
+        heart.style.opacity = "0";
+      }, 50);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 3000);
+    };
+
+    const interval = setInterval(createHeart, 800);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div
       style={{
         textAlign: "center",
-        marginTop: "50px",
-        backgroundColor: "#fff0f5",
-        color: "#800080",
         minHeight: "100vh",
-        fontFamily: "'Comic Sans MS', cursive, sans-serif",
+        fontFamily: "'Brush Script MT', cursive",
         padding: "20px",
+        background: "linear-gradient(to bottom, #ffe6f0, #ffccff)",
+        color: "#800080",
       }}
     >
-      <h1 style={{ fontSize: "3rem", marginBottom: "10px" }}>9.25 💖</h1>
-      <p style={{ fontSize: "1.5rem" }}>Disfruta la música y las fotos 🎶</p>
+      <h1 style={{ fontSize: "4rem", marginBottom: "10px", textShadow: "2px 2px 10px #ff99cc" }}>
+        💌 9.25 💌
+      </h1>
+      <p style={{ fontSize: "1.5rem" }}>Para ti, mi amor, con música y fotos 🎶</p>
 
       <button
         onClick={toggleAudio}
         style={{
           fontSize: "1.5rem",
-          padding: "10px 30px",
-          borderRadius: "15px",
+          padding: "15px 40px",
+          borderRadius: "25px",
           border: "none",
           backgroundColor: isPlaying ? "#800080" : "#ff69b4",
           color: "#fff",
           cursor: "pointer",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+          boxShadow: "0 6px 15px rgba(0,0,0,0.3)",
           margin: "20px 0",
-          transition: "transform 0.2s ease",
+          transition: "all 0.3s ease",
         }}
         onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
         onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
@@ -82,34 +111,35 @@ function Page925() {
         style={{
           marginTop: "40px",
           position: "relative",
-          height: "350px",
-          borderRadius: "20px",
+          height: "400px",
+          borderRadius: "25px",
           overflow: "hidden",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+          boxShadow: "0 6px 20px rgba(0,0,0,0.3)",
         }}
       >
         {images.map((img, index) => (
           <img
             key={index}
-            src={img as string} // 🔹 forzamos el tipo a string
+            src={img as string}
             alt={`Foto ${index + 1}`}
             style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
               position: "absolute",
               top: 0,
-              left: "50%",
-              transform: "translateX(-50%)",
-              transition: "opacity 1s ease-in-out",
+              left: 0,
               opacity: currentImage === index ? 1 : 0,
-              borderRadius: "20px",
+              transition: "opacity 2s ease-in-out, transform 4s ease-in-out",
+              transform: currentImage === index ? "scale(1.05)" : "scale(1)",
+              borderRadius: "25px",
             }}
           />
         ))}
       </div>
 
-      <p style={{ marginTop: "30px", fontStyle: "italic" }}>
-        💌 Solo para ti, mi amor 💌
+      <p style={{ marginTop: "30px", fontSize: "1.2rem", fontStyle: "italic" }}>
+        💖 Solo para ti, mi amor 💖
       </p>
     </div>
   );

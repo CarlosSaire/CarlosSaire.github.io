@@ -9,15 +9,6 @@ function Page925() {
     const timeoutId = setTimeout(() => {
       audio.play().catch(() => {
         console.warn("⚠️ Bloqueado por el navegador, esperando clic...");
-
-        const handleClick = () => {
-          audio.play().then(() => {
-            console.log("🎵 Música reproducida después del clic");
-          });
-          document.removeEventListener("click", handleClick);
-        };
-
-        document.addEventListener("click", handleClick);
       });
     }, 1000);
 
@@ -31,8 +22,22 @@ function Page925() {
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h1>Página 9.25</h1>
-      <p>La música intentará reproducirse automáticamente 🎶</p>
-      <p>Si no suena, haz clic en cualquier parte ❤️</p>
+      <p>La música comenzará en 1 segundo 🎶</p>
+
+      {/* Mostrar imágenes */}
+      <div style={{ marginTop: "30px" }}>
+        <img
+          src={`${import.meta.env.BASE_URL}Images/9-25/Foto1.jpg`}
+          alt="Foto 1"
+          style={{ maxWidth: "80%", marginBottom: "20px" }}
+        />
+        <br />
+        <img
+          src={`${import.meta.env.BASE_URL}Images/9-25/Foto2.jpg`}
+          alt="Foto 2"
+          style={{ maxWidth: "80%" }}
+        />
+      </div>
     </div>
   );
 }

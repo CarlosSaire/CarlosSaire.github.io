@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
-import Foto1 from "../assets/images/9-25/Foto1.jpg";
-import Foto2 from "../assets/images/9-25/Foto2.jpg";
 import PublicoAudio from "../assets/images/9-25/Publico.mp3";
+
+const images: string[] = Object.values(
+  import.meta.glob("../assets/images/9-25/Foto*.jpg", { eager: true, import: "default" })
+);
 
 function Page925() {
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
-  const images = [Foto1, Foto2];
 
-  // Crear audio al montar
   useEffect(() => {
     const newAudio = new Audio(PublicoAudio);
     newAudio.loop = true;
     newAudio.volume = 0.5;
     setAudio(newAudio);
 
-    // Cambio de imágenes cada 3 segundos
     const intervalId = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
     }, 3000);
@@ -28,7 +27,6 @@ function Page925() {
     };
   }, []);
 
-  // Función para reproducir/pausar música
   const toggleAudio = () => {
     if (!audio) return;
 
@@ -36,7 +34,9 @@ function Page925() {
       audio
         .play()
         .then(() => setIsPlaying(true))
-        .catch(() => alert("⚠️ Haz clic de nuevo para reproducir la música"));
+        .catch(() =>
+          alert("⚠️ Haz clic de nuevo para reproducir la música")
+        );
     } else {
       audio.pause();
       setIsPlaying(false);
@@ -55,10 +55,9 @@ function Page925() {
         padding: "20px",
       }}
     >
-      <h1 style={{ fontSize: "3rem", marginBottom: "10px" }}>Página 9.25 💖</h1>
+      <h1 style={{ fontSize: "3rem", marginBottom: "10px" }}>9.25 💖</h1>
       <p style={{ fontSize: "1.5rem" }}>Disfruta la música y las fotos 🎶</p>
 
-      {/* Botón reproducir / pausar */}
       <button
         onClick={toggleAudio}
         style={{
@@ -79,7 +78,6 @@ function Page925() {
         {isPlaying ? "Pausar música ⏸️" : "Reproducir música 🎵"}
       </button>
 
-      {/* Carrusel de fotos con fade */}
       <div
         style={{
           marginTop: "40px",
@@ -93,7 +91,7 @@ function Page925() {
         {images.map((img, index) => (
           <img
             key={index}
-            src={img}
+            src={img as string} // 🔹 forzamos el tipo a string
             alt={`Foto ${index + 1}`}
             style={{
               maxWidth: "100%",
